@@ -50,7 +50,7 @@ export default function ShopPage() {
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search products"
+            placeholder="Search books"
             className="pl-10"
           />
         </div>
@@ -60,7 +60,7 @@ export default function ShopPage() {
         <p className="text-sm font-semibold">Category</p>
         <div className="mt-3 space-y-2">
           {[
-            { label: "All products", value: "all" },
+            { label: "All books", value: "all" },
             ...categories.map((category) => ({ label: category.name, value: category.slug })),
           ].map((option) => (
             <button
@@ -99,9 +99,9 @@ export default function ShopPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Shop</p>
-          <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">The premium catalog</h1>
+          <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Discover your next favorite read</h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Browse refined pieces with filtering, searching, and responsive layouts built for fast decisions.
+            Browse immersive stories, practical guides, and thoughtful recommendations with fast, reader-first browsing.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -126,8 +126,8 @@ export default function ShopPage() {
 
         <div>
           <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">
-            <span>{filteredProducts.length} products</span>
-            <span>{isLoading ? "Loading" : "Ready to shop"}</span>
+            <span>{filteredProducts.length} books</span>
+            <span>{isLoading ? "Loading" : "Ready to read"}</span>
           </div>
 
           {isLoading ? (

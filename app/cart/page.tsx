@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react";
 
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
@@ -20,9 +20,8 @@ export default function CartPage() {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <EmptyState
-          title="Your cart is empty"
-          description="Add a few premium pieces and return here to review your order.
-"
+          title="Your reading cart is empty"
+          description="Add a few titles and return here to review your next reading stack."
           actionLabel="Shop the collection"
           href="/shop"
         />
@@ -34,7 +33,7 @@ export default function CartPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-2xl">
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Cart</p>
-        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Your current selection</h1>
+        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Your current reading stack</h1>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
@@ -83,15 +82,15 @@ export default function CartPage() {
               <span>{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span>Shipping</span>
-              <span>Free</span>
+              <span>Delivery</span>
+              <span>Instant</span>
             </div>
             <div className="flex justify-between text-lg font-semibold">
               <span>Total</span>
               <span>{formatCurrency(subtotal)}</span>
             </div>
             <div className="rounded-[20px] bg-muted/60 p-3 text-sm text-muted-foreground">
-              Promo code <span className="font-semibold text-foreground">LUMA15</span> is available during checkout.
+              Promo code <span className="font-semibold text-foreground">INK15</span> is available during checkout.
             </div>
             <Button asChild className="w-full">
               <Link href="/checkout">Proceed to checkout</Link>

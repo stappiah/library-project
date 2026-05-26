@@ -22,7 +22,7 @@ export default function CheckoutPage() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    toast.success("Order preview ready — checkout flow is UI-only in this demo.");
+    toast.success("Your order preview is ready — this demo checkout is UI-only.");
     clearCart();
   };
 
@@ -30,13 +30,13 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-2xl">
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Checkout</p>
-        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Complete your order</h1>
+        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Complete your reading order</h1>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Shipping details</CardTitle>
+            <CardTitle>Reader details</CardTitle>
           </CardHeader>
           <CardContent>
             <form className="grid gap-4" onSubmit={handleSubmit}>
@@ -45,13 +45,13 @@ export default function CheckoutPage() {
                 <Input placeholder="Last name" required />
               </div>
               <Input placeholder="Email" type="email" required />
-              <Input placeholder="Street address" required />
+              <Input placeholder="Delivery address" required />
               <div className="grid gap-4 sm:grid-cols-3">
                 <Input placeholder="City" required />
                 <Input placeholder="State" required />
                 <Input placeholder="ZIP" required />
               </div>
-              <Input placeholder="Promo code" defaultValue="LUMA15" />
+              <Input placeholder="Promo code" defaultValue="INK15" />
               <Button type="submit" className="w-full">
                 Place order
               </Button>
@@ -75,8 +75,8 @@ export default function CheckoutPage() {
               <span>{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span>Shipping</span>
-              <span>Free</span>
+              <span>Delivery</span>
+              <span>Instant</span>
             </div>
             <div className="flex justify-between text-lg font-semibold">
               <span>Total</span>

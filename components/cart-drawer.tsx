@@ -23,7 +23,7 @@ export function CartDrawer() {
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2 text-left">
             <ShoppingBag className="h-5 w-5" />
-            Cart ({items.length})
+            Reading cart ({items.length})
           </SheetTitle>
         </SheetHeader>
 
@@ -37,7 +37,7 @@ export function CartDrawer() {
                 exit={{ opacity: 0, y: 12 }}
                 className="rounded-[24px] border border-dashed border-border p-6 text-sm text-muted-foreground"
               >
-                Your cart is empty. Add a few premium favorites to start your order.
+                Your reading cart is empty. Add a few e-books to build your next stack.
               </motion.div>
             ) : (
               items.map((item) => (
@@ -107,8 +107,8 @@ export function CartDrawer() {
               <span>{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span>Shipping</span>
-              <span>Free</span>
+              <span>Delivery</span>
+              <span>Instant</span>
             </div>
             <div className="flex justify-between text-lg font-semibold">
               <span>Total</span>
@@ -119,7 +119,7 @@ export function CartDrawer() {
                 <Link href="/checkout">Checkout</Link>
               </Button>
               <Button variant="secondary" className="w-full" onClick={closeDrawer}>
-                Continue shopping
+                Continue reading
               </Button>
             </div>
           </div>

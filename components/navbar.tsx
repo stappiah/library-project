@@ -30,9 +30,9 @@ export function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3">
           <div className="rounded-full bg-foreground px-3 py-1 text-sm font-semibold text-background">
-            Luma
+            InkPages
           </div>
-          <span className="text-sm font-medium text-muted-foreground">Premium storefront</span>
+          <span className="text-sm font-medium text-muted-foreground">Curated e-books</span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
