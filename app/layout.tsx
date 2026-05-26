@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Luma — Premium storefront",
-  description: "A modern, premium ecommerce frontend built with Next.js and Tailwind CSS.",
+  title: "InkPages — Curated e-books",
+  description: "A modern e-book storefront for discovering fiction, mystery, romance, and nonfiction reads.",
 };
 
 export default function RootLayout({

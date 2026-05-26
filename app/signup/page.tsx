@@ -10,7 +10,7 @@ export default function SignupPage() {
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Create your account</CardTitle>
-          <p className="text-sm text-muted-foreground">Join Luma to save favorites, track orders, and unlock member perks.</p>
+          <p className="text-sm text-muted-foreground">Join InkPages to save favorites, track reading orders, and unlock reader perks.</p>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">

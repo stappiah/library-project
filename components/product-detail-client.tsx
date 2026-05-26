@@ -19,8 +19,8 @@ const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
 
 export function ProductDetailClient({ product }: { product: Product }) {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
+  const [selectedFormat, setSelectedFormat] = useState(product.colors[0]);
+  const [selectedEdition, setSelectedEdition] = useState(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
 
   const addItem = useCartStore((state) => state.addItem);
@@ -53,7 +53,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
             <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">{product.name}</h1>
             <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
               <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-              <span>{product.rating} • {product.reviewCount} reviews</span>
+              <span>{product.rating} • {product.reviewCount} reader reviews</span>
             </div>
           </div>
 
@@ -74,14 +74,14 @@ export function ProductDetailClient({ product }: { product: Product }) {
 
           <div className="space-y-4">
             <div>
-              <p className="text-sm font-semibold">Color</p>
+              <p className="text-sm font-semibold">Format</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {product.colors.map((color) => (
                   <button
                     key={color}
                     type="button"
-                    onClick={() => setSelectedColor(color)}
-                    className={`rounded-full px-4 py-2 text-sm ${selectedColor === color ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
+                    onClick={() => setSelectedFormat(color)}
+                    className={`rounded-full px-4 py-2 text-sm ${selectedFormat === color ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
                   >
                     {color}
                   </button>
@@ -90,14 +90,14 @@ export function ProductDetailClient({ product }: { product: Product }) {
             </div>
 
             <div>
-              <p className="text-sm font-semibold">Size</p>
+              <p className="text-sm font-semibold">Edition</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {product.sizes.map((size) => (
                   <button
                     key={size}
                     type="button"
-                    onClick={() => setSelectedSize(size)}
-                    className={`rounded-full px-4 py-2 text-sm ${selectedSize === size ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
+                    onClick={() => setSelectedEdition(size)}
+                    className={`rounded-full px-4 py-2 text-sm ${selectedEdition === size ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
                   >
                     {size}
                   </button>
@@ -120,12 +120,12 @@ export function ProductDetailClient({ product }: { product: Product }) {
               size="lg"
               onClick={() => {
                 addItem({
-                  id: `${product.id}-${selectedColor}-${selectedSize}`,
+                  id: `${product.id}-${selectedFormat}-${selectedEdition}`,
                   name: product.name,
                   price: product.salePrice ?? product.price,
                   image: product.image,
-                  color: selectedColor,
-                  size: selectedSize,
+                  color: selectedFormat,
+                  size: selectedEdition,
                   slug: product.slug,
                 });
                 openDrawer();
@@ -170,7 +170,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
       <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <ProductTabs product={product} reviews={reviews} />
         <div>
-          <h2 className="text-2xl font-semibold">Related products</h2>
+          <h2 className="text-2xl font-semibold">More like this</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {relatedProducts.map((item) => (
               <motion.div key={item.id} whileHover={{ y: -6 }}>

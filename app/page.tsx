@@ -10,7 +10,7 @@ import { NewsletterSignup } from "@/components/newsletter-signup";
 import { ProductGrid } from "@/components/product-grid";
 import { TestimonialCard } from "@/components/testimonial-card";
 import { Button } from "@/components/ui/button";
-import { categories, getFeaturedProducts, products, reviews } from "@/lib/mock-data";
+import { categories, getFeaturedProducts, reviews } from "@/lib/mock-data";
 
 export default function Home() {
   const featured = getFeaturedProducts().slice(0, 3);
@@ -21,12 +21,12 @@ export default function Home() {
         <div className="rounded-[36px] border border-white/10 bg-white/75 px-5 py-3 text-sm text-muted-foreground backdrop-blur-xl dark:bg-zinc-950/70 sm:px-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p>
-              <span className="font-semibold text-foreground">Spring drop 2026</span> — curated essentials for calm, elevated living.
+              <span className="font-semibold text-foreground">Spring reading list 2026</span> — discover fresh, immersive e-books for every kind of reader.
             </p>
             <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              <span>Free shipping</span>
+              <span>Instant access</span>
               <span>•</span>
-              <span>Extended warranty</span>
+              <span>Bundle savings</span>
             </div>
           </div>
         </div>
@@ -39,17 +39,17 @@ export default function Home() {
           className="rounded-[36px] border border-white/10 bg-white/80 p-6 shadow-[0_30px_120px_rgba(15,23,42,0.08)] dark:bg-zinc-950/70 sm:p-8"
         >
           <p className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Premium collection
+            Curated e-books
           </p>
           <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Modern essentials for a beautifully wired day.
+            The library for the mood you want next.
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-            Explore thoughtfully crafted devices, travel pieces, and home accents designed to feel premium from the first glance.
+            Explore fiction, mystery, romance, and nonfiction reads selected for immersive storylines, bold ideas, and easy discovery.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg">
-              <Link href="/shop">Shop now <ArrowRight className="h-4 w-4" /></Link>
+              <Link href="/shop">Browse books <ArrowRight className="h-4 w-4" /></Link>
             </Button>
             <Button asChild variant="secondary" size="lg">
               <Link href="/categories">Browse categories</Link>
@@ -58,7 +58,7 @@ export default function Home() {
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {[
               { label: "4.9 average rating", icon: Star },
-              { label: "2-day express shipping", icon: Sparkles },
+              { label: "Instant delivery", icon: Sparkles },
               { label: "Secure checkout", icon: ShieldCheck },
             ].map((item) => (
               <div key={item.label} className="rounded-[24px] bg-muted/60 px-4 py-3">
@@ -75,8 +75,8 @@ export default function Home() {
           className="rounded-[36px] border border-white/10 bg-gradient-to-br from-sky-500/20 to-fuchsia-500/20 p-4 sm:p-5"
         >
           <img
-            src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80"
-            alt="A premium lifestyle scene"
+            src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80"
+            alt="A cozy reading scene with books"
             className="h-full min-h-[420px] w-full rounded-[28px] object-cover"
           />
         </motion.div>
@@ -85,11 +85,11 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Featured products</p>
-            <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Curated for modern rituals</h2>
+            <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Featured books</p>
+            <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Curated for your next reading ritual</h2>
           </div>
           <Link href="/shop" className="text-sm font-semibold text-foreground">
-            View all products →
+            View all books →
           </Link>
         </div>
         <div className="mt-6">
@@ -101,9 +101,9 @@ export default function Home() {
         <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="rounded-[32px] border border-white/10 bg-white/80 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] dark:bg-zinc-950/70">
             <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Trending categories</p>
-            <h2 className="mt-3 text-2xl font-semibold">Find the right mood, moment, and match</h2>
+            <h2 className="mt-3 text-2xl font-semibold">Find the right mood, moment, and genre match</h2>
             <p className="mt-3 text-sm text-muted-foreground">
-              Explore tactile favorites, performance pieces, and elevated home accents in a single modern catalog.
+              Explore fiction, mystery, romance, and nonfiction selections that feel thoughtful, discoverable, and easy to dive into.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -120,10 +120,10 @@ export default function Home() {
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Limited time offer</p>
               <h2 className="mt-3 text-2xl font-semibold">Save 15% on every curated bundle this week.</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Use code LUMA15 at checkout to unlock premium savings on select collections.</p>
+              <p className="mt-2 text-sm text-muted-foreground">Use code INK15 at checkout to unlock reading savings on select bundles.</p>
             </div>
             <Button asChild size="lg">
-              <Link href="/shop">Explore savings</Link>
+              <Link href="/shop">Explore bundles</Link>
             </Button>
           </div>
         </div>
@@ -132,8 +132,8 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Testimonials</p>
-            <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Trusted by the fast-moving and detail-driven</h2>
+            <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Reader favorites</p>
+            <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Loved by readers who are drawn to atmosphere and craft</h2>
           </div>
         </div>
         <div className="mt-6 grid gap-4 lg:grid-cols-3">
