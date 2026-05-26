@@ -119,8 +119,8 @@ export default function Home() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Limited time offer</p>
-              <h2 className="mt-3 text-2xl font-semibold">Save 15% on every curated bundle this week.</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Use code INK15 at checkout to unlock reading savings on select bundles.</p>
+              <h2 className="mt-3 text-2xl font-semibold">Save 20% on every curated bundle this week.</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Use code INK20 at checkout to unlock reading savings on select bundles.</p>
             </div>
             <Button asChild size="lg">
               <Link href="/shop">Explore bundles</Link>
