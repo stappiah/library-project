@@ -11,7 +11,7 @@ export default function AccountPage() {
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Account</p>
         <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Welcome back, {userProfile.name}</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Keep your wishlist, recent orders, and reading habits in one place.
+          Keep your wishlist, recent orders, and materials needs in one place.
         </p>
       </div>
 
@@ -38,7 +38,7 @@ export default function AccountPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             {orders.map((order) => (
-              <div key={order.id} className="rounded-[24px] bg-muted/60 p-4">
+              <div key={order.id} className="rounded-3xl bg-muted/60 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="font-semibold">{order.id}</p>

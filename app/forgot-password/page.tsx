@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Reset your password</CardTitle>
-          <p className="text-sm text-muted-foreground">Enter the email on your account and we’ll send a secure reset link so you can get back to reading.</p>
+          <p className="text-sm text-muted-foreground">Enter the email on your account and we’ll send a secure reset link so you can get back to your campus materials.</p>
         </CardHeader>
         <CardContent className="space-y-4">
           <Input placeholder="Email" type="email" />

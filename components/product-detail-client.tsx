@@ -51,9 +51,14 @@ export function ProductDetailClient({ product }: { product: Product }) {
           <div>
             <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">{product.category}</p>
             <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">{product.name}</h1>
+            <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <p>{product.courseCode} • {product.department}</p>
+              <p>Professor {product.professor}</p>
+            </div>
+
             <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
               <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-              <span>{product.rating} • {product.reviewCount} reader reviews</span>
+              <span>{product.rating} • {product.reviewCount} student reviews</span>
             </div>
           </div>
 

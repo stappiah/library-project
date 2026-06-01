@@ -9,7 +9,7 @@ export function Breadcrumbs({ items }: BreadcrumbProps) {
     <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
       <ol className="flex flex-wrap items-center gap-2">
         {items.map((item, index) => (
-          <li key={`${item.label}-${index}`} className="flex items-center gap-2">
+          <li key={`breadcrumb-${item.label}-${index}`} className="flex items-center gap-2">
             {item.href ? (
               <Link href={item.href} className="hover:text-foreground">
                 {item.label}

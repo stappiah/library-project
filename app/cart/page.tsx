@@ -20,9 +20,9 @@ export default function CartPage() {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <EmptyState
-          title="Your reading cart is empty"
-          description="Add a few titles and return here to review your next reading stack."
-          actionLabel="Shop the collection"
+          title="Your materials cart is empty"
+          description="Add course resources and return here to review your next term stack."
+          actionLabel="Browse materials"
           href="/shop"
         />
       </div>
@@ -33,7 +33,7 @@ export default function CartPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-2xl">
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Cart</p>
-        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Your current reading stack</h1>
+        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Your current materials stack</h1>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
@@ -41,7 +41,7 @@ export default function CartPage() {
           {items.map((item) => (
             <Card key={item.id}>
               <CardContent className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
-                <img src={item.image} alt={item.name} className="h-28 w-full rounded-[24px] object-cover sm:w-28" />
+                <img src={item.image} alt={item.name} className="h-28 w-full rounded-3xl object-cover sm:w-28" />
                 <div className="flex-1 space-y-2">
                   <div>
                     <p className="font-semibold">{item.name}</p>
@@ -89,7 +89,7 @@ export default function CartPage() {
               <span>Total</span>
               <span>{formatCurrency(subtotal)}</span>
             </div>
-            <div className="rounded-[20px] bg-muted/60 p-3 text-sm text-muted-foreground">
+            <div className="rounded-2xl bg-muted/60 p-3 text-sm text-muted-foreground">
               Promo code <span className="font-semibold text-foreground">INK15</span> is available during checkout.
             </div>
             <Button asChild className="w-full">

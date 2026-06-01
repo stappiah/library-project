@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InkPages — Curated e-books",
-  description: "A modern e-book storefront for discovering fiction, mystery, romance, and nonfiction reads.",
+  title: "InkPages — Digital course materials",
+  description: "A university marketplace for digital course materials, textbooks, and professor resources.",
 };
 
 export default function RootLayout({

@@ -4,7 +4,7 @@ export function BrandLogos() {
       {['Ink', 'Page', 'Nook', 'Atlas', 'Lumen', 'Chronicle'].map((brand) => (
         <div
           key={brand}
-          className="rounded-[24px] border border-white/10 bg-white/80 px-4 py-5 text-center text-sm font-semibold dark:bg-zinc-950/70"
+          className="rounded-3xl border border-white/10 bg-white/80 px-4 py-5 text-center text-sm font-semibold dark:bg-zinc-950/70"
         >
           {brand}
         </div>

@@ -8,9 +8,9 @@ export default function CategoriesPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-2xl">
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Categories</p>
-        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Browse by mood, genre, and curiosity</h1>
+        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Browse by department, course, and material type</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          From suspenseful mysteries to reflective nonfiction, each category is curated to help you find your next favorite read faster.
+          From digital textbooks to lab manuals and professor notes, each category is built to help you find the right campus resource.
         </p>
       </div>
 
@@ -20,14 +20,14 @@ export default function CategoriesPage() {
         ))}
       </div>
 
-      <div className="mt-10 rounded-[28px] border border-white/10 bg-white/80 p-6 dark:bg-zinc-950/70">
+      <div className="mt-10 rounded-4xl border border-white/10 bg-white/80 p-6 dark:bg-zinc-950/70">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Need help deciding?</p>
-            <h2 className="mt-2 text-xl font-semibold">Tell us what you’re in the mood for and we’ll suggest the best fit.</h2>
+            <h2 className="mt-2 text-xl font-semibold">Tell us your course and we’ll suggest the best fit.</h2>
           </div>
           <Link href="/shop" className="inline-flex text-sm font-semibold text-foreground">
-            Browse all books →
+            Browse all materials →
           </Link>
         </div>
       </div>

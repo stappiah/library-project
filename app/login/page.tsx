@@ -10,7 +10,7 @@ export default function LoginPage() {
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Welcome back</CardTitle>
-          <p className="text-sm text-muted-foreground">Log in to save favorites, track downloads, and keep your reading list close.</p>
+          <p className="text-sm text-muted-foreground">Log in to save favorites, track materials, and keep your course list close.</p>
         </CardHeader>
         <CardContent className="space-y-4">
           <Input placeholder="Email" type="email" />
