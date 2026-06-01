@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Campus Market — Digital course materials",
+  title: "InkPages — Digital course materials",
   description: "A university marketplace for digital course materials, textbooks, and professor resources.",
 };
 
