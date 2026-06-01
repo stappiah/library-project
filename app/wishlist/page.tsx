@@ -16,8 +16,8 @@ export default function WishlistPage() {
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <EmptyState
           title="Your wishlist is empty"
-          description="Save books you want to revisit later and build your reading list over time."
-          actionLabel="Discover books"
+          description="Save materials you want to revisit later and build your course list over time."
+          actionLabel="Discover materials"
           href="/shop"
         />
       </div>
@@ -30,7 +30,7 @@ export default function WishlistPage() {
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Wishlist</p>
         <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Saved for later</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Keep your favorite titles close as you compare genres, bundles, and reading inspiration.
+          Keep your favorite materials close as you compare courses, bundles, and study inspiration.
         </p>
       </div>
 

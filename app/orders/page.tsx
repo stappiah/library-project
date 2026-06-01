@@ -9,7 +9,7 @@ export default function OrdersPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-2xl">
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Order history</p>
-        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Your recent reading orders</h1>
+        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Your recent materials orders</h1>
       </div>
 
       <div className="mt-8 space-y-4">

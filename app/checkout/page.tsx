@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
 
@@ -24,19 +26,20 @@ export default function CheckoutPage() {
     event.preventDefault();
     toast.success("Your order preview is ready — this demo checkout is UI-only.");
     clearCart();
+    router.push("/orders");
   };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-2xl">
         <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Checkout</p>
-        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Complete your reading order</h1>
+        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Complete your materials order</h1>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Reader details</CardTitle>
+            <CardTitle>Student details</CardTitle>
           </CardHeader>
           <CardContent>
             <form className="grid gap-4" onSubmit={handleSubmit}>

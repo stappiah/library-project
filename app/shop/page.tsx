@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Filter, Search } from "lucide-react";
 
 import { ProductGrid } from "@/components/product-grid";
@@ -11,9 +12,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { categories, products } from "@/lib/mock-data";
 
-export default function ShopPage() {
+const faculties = [
+  { name: "Faculty of Engineering", slug: "engineering" },
+  { name: "Faculty of Applied Science & Technology (FAST)", slug: "fast" },
+  { name: "Faculty of Business & Management Studies (FBMS)", slug: "fbms" },
+  { name: "Faculty of Built & Natural Environment", slug: "built-environment" },
+  { name: "Faculty of Health and Allied Sciences", slug: "health-sciences" },
+  { name: "School of Graduate Studies", slug: "graduate-studies" },
+];
+
+function ShopContent() {
+  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "all");
+  const [selectedFaculty, setSelectedFaculty] = useState(searchParams.get("faculty") || "all");
   const [sort, setSort] = useState("featured");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,7 +42,10 @@ export default function ShopPage() {
       const matchesCategory =
         selectedCategory === "all" || product.category === selectedCategory;
 
-      return matchesQuery && matchesCategory;
+      const matchesFaculty =
+        selectedFaculty === "all" || product.department?.toLowerCase().includes(selectedFaculty.toLowerCase());
+
+      return matchesQuery && matchesCategory && matchesFaculty;
     });
 
     return [...scoped].sort((a, b) => {
@@ -39,7 +54,7 @@ export default function ShopPage() {
       if (sort === "rating") return b.rating - a.rating;
       return 0;
     });
-  }, [query, selectedCategory, sort]);
+  }, [query, selectedCategory, selectedFaculty, sort]);
 
   const filterPanel = (
     <div className="space-y-6">
@@ -50,7 +65,7 @@ export default function ShopPage() {
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search books"
+            placeholder="Search materials"
             className="pl-10"
           />
         </div>
@@ -60,7 +75,7 @@ export default function ShopPage() {
         <p className="text-sm font-semibold">Category</p>
         <div className="mt-3 space-y-2">
           {[
-            { label: "All books", value: "all" },
+            { label: "All materials", value: "all" },
             ...categories.map((category) => ({ label: category.name, value: category.slug })),
           ].map((option) => (
             <button
@@ -68,6 +83,25 @@ export default function ShopPage() {
               type="button"
               onClick={() => setSelectedCategory(option.value)}
               className={`w-full rounded-2xl px-3 py-2 text-left text-sm ${selectedCategory === option.value ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold">Faculty</p>
+        <div className="mt-3 space-y-2">
+          {[
+            { label: "All faculties", value: "all" },
+            ...faculties.map((f) => ({ label: f.name, value: f.slug })),
+          ].map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setSelectedFaculty(option.value)}
+              className={`w-full rounded-2xl px-3 py-2 text-left text-sm ${selectedFaculty === option.value ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
             >
               {option.label}
             </button>
@@ -98,10 +132,10 @@ export default function ShopPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Shop</p>
-          <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Discover your next favorite read</h1>
+          <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Materials</p>
+          <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Discover your next course material</h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Browse immersive stories, practical guides, and thoughtful recommendations with fast, reader-first browsing.
+            Browse digital textbooks, lab manuals, professor notes, and study guides for fast campus access.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -120,14 +154,14 @@ export default function ShopPage() {
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
-        <aside className="hidden rounded-[28px] border border-white/10 bg-white/80 p-5 lg:block dark:bg-zinc-950/70">
+        <aside className="hidden rounded-4xl border border-white/10 bg-white/80 p-5 lg:block dark:bg-zinc-950/70">
           {filterPanel}
         </aside>
 
         <div>
           <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">
-            <span>{filteredProducts.length} books</span>
-            <span>{isLoading ? "Loading" : "Ready to read"}</span>
+            <span>{filteredProducts.length} materials</span>
+            <span>{isLoading ? "Loading" : "Ready to access"}</span>
           </div>
 
           {isLoading ? (
@@ -142,5 +176,13 @@ export default function ShopPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading shop...</div>}>
+      <ShopContent />
+    </Suspense>
   );
 }

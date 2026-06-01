@@ -23,7 +23,7 @@ export function CartDrawer() {
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2 text-left">
             <ShoppingBag className="h-5 w-5" />
-            Reading cart ({items.length})
+            Materials cart ({items.length})
           </SheetTitle>
         </SheetHeader>
 
@@ -35,9 +35,9 @@ export function CartDrawer() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
-                className="rounded-[24px] border border-dashed border-border p-6 text-sm text-muted-foreground"
+                className="rounded-3xl border border-dashed border-border p-6 text-sm text-muted-foreground"
               >
-                Your reading cart is empty. Add a few e-books to build your next stack.
+                Your materials cart is empty. Add course resources to start building your term stack.
               </motion.div>
             ) : (
               items.map((item) => (
@@ -47,7 +47,7 @@ export function CartDrawer() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 12 }}
-                  className="flex gap-3 rounded-[24px] border border-border bg-muted/40 p-3"
+                  className="flex gap-3 rounded-3xl border border-border bg-muted/40 p-3"
                 >
                   <img src={item.image} alt={item.name} className="h-20 w-20 rounded-2xl object-cover" />
                   <div className="flex-1 space-y-2">
@@ -101,7 +101,7 @@ export function CartDrawer() {
         </div>
 
         {items.length > 0 && (
-          <div className="mt-6 space-y-4 rounded-[24px] bg-muted/50 p-4">
+          <div className="mt-6 space-y-4 rounded-3xl bg-muted/50 p-4">
             <div className="flex justify-between text-sm">
               <span>Subtotal</span>
               <span>{formatCurrency(subtotal)}</span>
@@ -119,7 +119,7 @@ export function CartDrawer() {
                 <Link href="/checkout">Checkout</Link>
               </Button>
               <Button variant="secondary" className="w-full" onClick={closeDrawer}>
-                Continue reading
+                Continue browsing
               </Button>
             </div>
           </div>

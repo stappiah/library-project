@@ -12,9 +12,9 @@ export function ProductTabs({ product, reviews }: ProductTabsProps) {
       <TabsList>
         <TabsTrigger value="details">Details</TabsTrigger>
         <TabsTrigger value="reviews">Reviews</TabsTrigger>
-        <TabsTrigger value="extras">Reading extras</TabsTrigger>
+        <TabsTrigger value="extras">Study extras</TabsTrigger>
       </TabsList>
-      <TabsContent value="details" className="rounded-[24px] border border-white/10 bg-white/80 p-5 dark:bg-zinc-950/70">
+      <TabsContent value="details" className="rounded-3xl border border-white/10 bg-white/80 p-5 dark:bg-zinc-950/70">
         <p className="text-sm text-muted-foreground">{product.description}</p>
         <ul className="mt-4 space-y-2 text-sm">
           {product.highlights.map((item) => (
@@ -24,7 +24,7 @@ export function ProductTabs({ product, reviews }: ProductTabsProps) {
       </TabsContent>
       <TabsContent value="reviews" className="space-y-4">
         {reviews.map((review) => (
-          <div key={review.id} className="rounded-[24px] border border-white/10 bg-white/80 p-5 dark:bg-zinc-950/70">
+          <div key={review.id} className="rounded-3xl border border-white/10 bg-white/80 p-5 dark:bg-zinc-950/70">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-semibold">{review.user}</p>
@@ -37,7 +37,7 @@ export function ProductTabs({ product, reviews }: ProductTabsProps) {
           </div>
         ))}
       </TabsContent>
-      <TabsContent value="extras" className="rounded-[24px] border border-white/10 bg-white/80 p-5 dark:bg-zinc-950/70">
+      <TabsContent value="extras" className="rounded-3xl border border-white/10 bg-white/80 p-5 dark:bg-zinc-950/70">
         <ul className="space-y-2 text-sm text-muted-foreground">
           {product.details.map((item) => (
             <li key={item}>• {item}</li>

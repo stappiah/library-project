@@ -12,8 +12,10 @@ import { useCartStore } from "@/stores/cart-store";
 
 const menuLinks = [
   { href: "/", label: "Home" },
-  { href: "/shop", label: "Shop" },
+  { href: "/shop", label: "Materials" },
+  { href: "/faculties", label: "Faculties" },
   { href: "/categories", label: "Categories" },
+  { href: "/professor", label: "Professor" },
   { href: "/account", label: "Account" },
 ];
 
@@ -30,9 +32,9 @@ export function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3">
           <div className="rounded-full bg-foreground px-3 py-1 text-sm font-semibold text-background">
-            InkPages
+            Campus Market
           </div>
-          <span className="text-sm font-medium text-muted-foreground">Curated e-books</span>
+          <span className="text-sm font-medium text-muted-foreground">Digital course materials</span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">

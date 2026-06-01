@@ -26,7 +26,7 @@ export function ProductCard({ product }: { product: Product }) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6 }}
-      className="group overflow-hidden rounded-[28px] border border-white/10 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.08)] dark:bg-zinc-950/70"
+      className="group overflow-hidden rounded-4xl border border-white/10 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.08)] dark:bg-zinc-950/70"
     >
       <div className="relative overflow-hidden">
         <img
@@ -58,8 +58,12 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="space-y-4 p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-sm text-muted-foreground">{product.category}</p>
+            <p className="text-sm text-muted-foreground">
+              {product.courseCode} • {product.category}
+              {product.department && <span className="block text-xs opacity-70">{product.department}</span>}
+            </p>
             <h3 className="mt-1 text-lg font-semibold">{product.name}</h3>
+            <p className="text-sm text-muted-foreground">Professor {product.professor}</p>
           </div>
           <div className="text-right">
             <p className="text-base font-semibold">{formatCurrency(product.salePrice ?? product.price)}</p>
@@ -92,7 +96,7 @@ export function ProductCard({ product }: { product: Product }) {
             variant="secondary"
             onClick={() =>
               addItem({
-                id: product.id,
+                id: `${product.id}-${product.colors[0]}-${product.sizes[0]}`,
                 name: product.name,
                 price: product.salePrice ?? product.price,
                 image: product.image,

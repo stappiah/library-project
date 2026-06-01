@@ -12,7 +12,7 @@ interface EmptyStateProps {
 
 export function EmptyState({ title, description, actionLabel, href }: EmptyStateProps) {
   return (
-    <div className="rounded-[28px] border border-dashed border-border px-6 py-12 text-center">
+    <div className="rounded-4xl border border-dashed border-border px-6 py-12 text-center">
       <Sparkles className="mx-auto h-10 w-10 text-muted-foreground" />
       <h2 className="mt-4 text-xl font-semibold">{title}</h2>
       <p className="mt-2 text-sm text-muted-foreground">{description}</p>
