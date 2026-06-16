@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useMemo, useState, Suspense, useEffect } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Filter, Search } from "lucide-react";
 
 import { ProductGrid } from "@/components/product-grid";
@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { categories, products } from "@/lib/mock-data";
-
+import { categories } from "@/lib/mock-data";
+import { useProducts } from "@/lib/api/use-products";
+// Mock data for faculties - these should ideally come from an API
 const faculties = [
   { name: "Faculty of Engineering", slug: "engineering" },
   { name: "Faculty of Applied Science & Technology (FAST)", slug: "fast" },
@@ -22,19 +23,48 @@ const faculties = [
 ];
 
 function ShopContent() {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "all");
-  const [selectedFaculty, setSelectedFaculty] = useState(searchParams.get("faculty") || "all");
-  const [sort, setSort] = useState("featured");
-  const [isLoading, setIsLoading] = useState(true);
 
+  // Initialize state from URL search parameters
+  const initialQuery = searchParams.get("query") || "";
+  const initialCategory = searchParams.get("category") || "all";
+  const initialFaculty = searchParams.get("faculty") || "all";
+  const initialSort = searchParams.get("sort") || "featured";
+
+  const [query, setQuery] = useState(initialQuery);
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [selectedFaculty, setSelectedFaculty] = useState(initialFaculty);
+  const [sort, setSort] = useState(initialSort);
+  const { products, isLoading, error } = useProducts();
+
+  // Synchronize URL with state changes
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLoading(false), 650);
-    return () => window.clearTimeout(timer);
-  }, []);
+    const newSearchParams = new URLSearchParams();
+    if (query) {
+      newSearchParams.set("query", query);
+    }
+    if (selectedCategory !== "all") {
+      newSearchParams.set("category", selectedCategory);
+    }
+    if (selectedFaculty !== "all") {
+      newSearchParams.set("faculty", selectedFaculty);
+    }
+    if (sort !== "featured") {
+      newSearchParams.set("sort", sort);
+    }
+
+    const currentSearchParamsString = searchParams.toString();
+    const newSearchParamsString = newSearchParams.toString();
+
+    if (currentSearchParamsString !== newSearchParamsString) {
+      router.push(`${pathname}?${newSearchParamsString}`, { scroll: false });
+    }
+  }, [query, selectedCategory, selectedFaculty, sort, router, pathname, searchParams]);
 
   const filteredProducts = useMemo(() => {
+    if (!products) return []; // Handle case where products might be null initially
     const scoped = products.filter((product) => {
       const matchesQuery = `${product.name} ${product.description}`
         .toLowerCase()
@@ -51,10 +81,15 @@ function ShopContent() {
     return [...scoped].sort((a, b) => {
       if (sort === "price-low") return (a.salePrice ?? a.price) - (b.salePrice ?? b.price);
       if (sort === "price-high") return (b.salePrice ?? b.price) - (a.salePrice ?? a.price);
-      if (sort === "rating") return b.rating - a.rating;
+      if (sort === "rating") return (b.rating ?? 0) - (a.rating ?? 0); // Added nullish coalescing for rating
       return 0;
     });
-  }, [query, selectedCategory, selectedFaculty, sort]);
+  }, [query, selectedCategory, selectedFaculty, sort, products]); // Added products to dependency array
+
+  const categoriesToDisplay = [
+    { label: "All materials", value: "all" },
+    ...categories.map((category) => ({ label: category.name, value: category.slug })),
+  ];
 
   const filterPanel = (
     <div className="space-y-6">
@@ -74,10 +109,7 @@ function ShopContent() {
       <div>
         <p className="text-sm font-semibold">Category</p>
         <div className="mt-3 space-y-2">
-          {[
-            { label: "All materials", value: "all" },
-            ...categories.map((category) => ({ label: category.name, value: category.slug })),
-          ].map((option) => (
+          {categoriesToDisplay.map((option) => (
             <button
               key={option.value}
               type="button"
@@ -161,7 +193,7 @@ function ShopContent() {
         <div>
           <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">
             <span>{filteredProducts.length} materials</span>
-            <span>{isLoading ? "Loading" : "Ready to access"}</span>
+            <span>{isLoading ? "Loading" : error ? "Sync issue" : "Ready to access"}</span>
           </div>
 
           {isLoading ? (
@@ -169,6 +201,10 @@ function ShopContent() {
               {Array.from({ length: 6 }).map((_, index) => (
                 <ProductSkeleton key={index} />
               ))}
+            </div>
+          ) : error ? (
+            <div className="rounded-3xl border border-destructive/20 bg-destructive/5 p-6 text-sm text-muted-foreground">
+              We could not fetch the latest materials right now. The app is using the local fallback data instead.
             </div>
           ) : (
             <ProductGrid products={filteredProducts} />

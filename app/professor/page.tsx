@@ -3,6 +3,7 @@ import { BookOpen, ClipboardList, GraduationCap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { VendorUploadForm } from "@/components/vendor-upload-form";
 
 export default function ProfessorPage() {
   return (
@@ -63,6 +64,10 @@ export default function ProfessorPage() {
             <Link href="/signup">Create faculty account</Link>
           </Button>
         </div>
+      </div>
+
+      <div className="mt-10">
+        <VendorUploadForm />
       </div>
     </div>
   );
