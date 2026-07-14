@@ -1,43 +1,68 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { orders } from "@/lib/mock-data";
+"use client";
 
-const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+import { useEffect, useState } from "react";
+import { useAppSelector } from "@/store/hooks";
+import { selectAccessToken, selectIsAuthenticated } from "@/store/slices/authSlice";
+import { getOrders } from "@/lib/services/catalog-service";
+import type { Order } from "@/types/ecommerce";
 
 export default function OrdersPage() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const accessToken = useAppSelector(selectAccessToken);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
+  useEffect(() => {
+    if (!accessToken) {
+      setOrders([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    getOrders(accessToken)
+      .then(setOrders)
+      .catch(() => setOrders([]))
+      .finally(() => setLoading(false));
+  }, [accessToken]);
+
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="max-w-2xl">
-        <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Order history</p>
-        <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Your recent materials orders</h1>
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <div className="mb-8">
+        <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">Order history</p>
+        <h1 className="mt-3 text-3xl font-bold text-zinc-950 dark:text-white">Everything you’ve ordered</h1>
       </div>
 
-      <div className="mt-8 space-y-4">
-        {orders.map((order) => (
-          <Card key={order.id}>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between gap-4">
-                <span>{order.id}</span>
-                <span className="text-sm font-medium">{order.status}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-sm text-muted-foreground">Titles</p>
-                <p className="font-semibold">{order.items.join(", ")}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Date</p>
-                <p className="font-semibold">{order.date}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Total</p>
-                <p className="font-semibold">{formatCurrency(order.total)}</p>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {loading ? (
+        <div className="rounded-[30px] border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">Loading orders...</p>
+        </div>
+      ) : !isAuthenticated ? (
+        <div className="rounded-[30px] border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">Please sign in to view your order history.</p>
+        </div>
+      ) : orders.length === 0 ? (
+        <div className="rounded-[30px] border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">No orders found yet.</p>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-[30px] border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="grid grid-cols-[1.2fr_1fr_1fr_1fr] gap-4 border-b border-zinc-200 px-4 py-3 text-sm font-semibold dark:border-zinc-800">
+            <span>Order</span>
+            <span>Date</span>
+            <span>Status</span>
+            <span>Total</span>
+          </div>
+          {orders.map((order) => (
+            <div key={order.id} className="grid grid-cols-[1.2fr_1fr_1fr_1fr] gap-4 border-b border-zinc-100 px-4 py-4 text-sm last:border-b-0 dark:border-zinc-800">
+              <span>{order.id}</span>
+              <span>{order.date}</span>
+              <span>{order.status}</span>
+              <span>{order.total.toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

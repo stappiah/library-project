@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "next-themes";
-
-import { SiteShell } from "@/components/site-shell";
 import "./globals.css";
+import { Navbar } from "@/components/sections/navbar";
+import { Footer } from "@/components/sections/footer";
+import { CartDrawer } from "@/components/sections/cart-drawer";
+import { AppStoreProvider } from "@/store/app-store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const themeScript = `
+  (function () {
+    try {
+      const savedTheme = localStorage.getItem("luma-theme");
+      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const shouldUseDark = savedTheme ? savedTheme === "dark" : systemPrefersDark;
+      document.documentElement.classList.toggle("dark", shouldUseDark);
+      document.documentElement.style.colorScheme = shouldUseDark ? "dark" : "light";
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+`;
+
 export const metadata: Metadata = {
-  title: "InkPages — Digital course materials",
-  description: "A university marketplace for digital course materials, textbooks, and professor resources.",
+  title: "Luma Atelier | Premium storefront",
+  description: "An elevated ecommerce storefront with premium product storytelling and modern commerce UI.",
 };
 
 export default function RootLayout({
@@ -28,13 +43,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full bg-background text-foreground">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <SiteShell>{children}</SiteShell>
-        </ThemeProvider>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-full bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.18),transparent_30%),linear-gradient(180deg,#f8fafc,white_35%,#f5f3ff)] text-zinc-950 transition-colors duration-300 dark:bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.14),transparent_30%),linear-gradient(180deg,#020617,#0f172a_35%,#111827)] dark:text-white">
+        <AppStoreProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          <CartDrawer />
+        </AppStoreProvider>
       </body>
     </html>
   );

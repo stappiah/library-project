@@ -1,188 +1,143 @@
 "use client";
 
-import { useEffect, useMemo, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { Filter, Search } from "lucide-react";
-
-import { ProductGrid } from "@/components/product-grid";
-import { ProductSkeleton } from "@/components/loading-skeleton";
+import { useEffect, useMemo, useState } from "react";
+import { SlidersHorizontal, Search, ArrowUpDown } from "lucide-react";
+import { FilterSidebar } from "@/components/sections/filter-sidebar";
+import { ProductGrid } from "@/components/sections/product-grid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { categories, products } from "@/lib/mock-data";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getProducts } from "@/lib/services/catalog-service";
+import type { Product } from "@/types/ecommerce";
 
-const faculties = [
-  { name: "Faculty of Engineering", slug: "engineering" },
-  { name: "Faculty of Applied Science & Technology (FAST)", slug: "fast" },
-  { name: "Faculty of Business & Management Studies (FBMS)", slug: "fbms" },
-  { name: "Faculty of Built & Natural Environment", slug: "built-environment" },
-  { name: "Faculty of Health and Allied Sciences", slug: "health-sciences" },
-  { name: "School of Graduate Studies", slug: "graduate-studies" },
-];
+const sortOptions = ["Featured", "Price: Low to High", "Price: High to Low", "Top Rated"];
 
-function ShopContent() {
-  const searchParams = useSearchParams();
-  const [query, setQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "all");
-  const [selectedFaculty, setSelectedFaculty] = useState(searchParams.get("faculty") || "all");
-  const [sort, setSort] = useState("featured");
-  const [isLoading, setIsLoading] = useState(true);
+export default function ShopPage() {
+  const [productsData, setProductsData] = useState<Product[]>([]);
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedBrand, setSelectedBrand] = useState("All");
+  const [priceRange, setPriceRange] = useState("All");
+  const [sort, setSort] = useState("Featured");
+  const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLoading(false), 650);
-    return () => window.clearTimeout(timer);
+    let isMounted = true;
+
+    const loadProducts = async () => {
+      const data = await getProducts();
+      if (isMounted) {
+        setProductsData(data);
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const filteredProducts = useMemo(() => {
-    const scoped = products.filter((product) => {
-      const matchesQuery = `${product.name} ${product.description}`
-        .toLowerCase()
-        .includes(query.toLowerCase());
-      const matchesCategory =
-        selectedCategory === "all" || product.category === selectedCategory;
+  const filtered = useMemo(() => {
+    const query = search.toLowerCase();
 
-      const matchesFaculty =
-        selectedFaculty === "all" || product.department?.toLowerCase().includes(selectedFaculty.toLowerCase());
+    return productsData
+      .filter((product) => {
+        const matchesSearch =
+          product.title.toLowerCase().includes(query) || product.brand.toLowerCase().includes(query);
+        const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+        const matchesBrand = selectedBrand === "All" || product.brand === selectedBrand;
+        const matchesPrice =
+          priceRange === "All" ||
+          (priceRange === "Under $100" && product.price < 100) ||
+          (priceRange === "$100 - $200" && product.price >= 100 && product.price <= 200) ||
+          (priceRange === "$200+" && product.price > 200);
 
-      return matchesQuery && matchesCategory && matchesFaculty;
-    });
+        return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
+      })
+      .sort((a, b) => {
+        if (sort === "Price: Low to High") return a.price - b.price;
+        if (sort === "Price: High to Low") return b.price - a.price;
+        if (sort === "Top Rated") return b.rating - a.rating;
+        return 0;
+      });
+  }, [priceRange, productsData, search, selectedBrand, selectedCategory, sort]);
 
-    return [...scoped].sort((a, b) => {
-      if (sort === "price-low") return (a.salePrice ?? a.price) - (b.salePrice ?? b.price);
-      if (sort === "price-high") return (b.salePrice ?? b.price) - (a.salePrice ?? a.price);
-      if (sort === "rating") return b.rating - a.rating;
-      return 0;
-    });
-  }, [query, selectedCategory, selectedFaculty, sort]);
-
-  const filterPanel = (
-    <div className="space-y-6">
-      <div>
-        <p className="text-sm font-semibold">Search</p>
-        <div className="relative mt-3">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search materials"
-            className="pl-10"
-          />
-        </div>
-      </div>
-
-      <div>
-        <p className="text-sm font-semibold">Category</p>
-        <div className="mt-3 space-y-2">
-          {[
-            { label: "All materials", value: "all" },
-            ...categories.map((category) => ({ label: category.name, value: category.slug })),
-          ].map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => setSelectedCategory(option.value)}
-              className={`w-full rounded-2xl px-3 py-2 text-left text-sm ${selectedCategory === option.value ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <p className="text-sm font-semibold">Faculty</p>
-        <div className="mt-3 space-y-2">
-          {[
-            { label: "All faculties", value: "all" },
-            ...faculties.map((f) => ({ label: f.name, value: f.slug })),
-          ].map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => setSelectedFaculty(option.value)}
-              className={`w-full rounded-2xl px-3 py-2 text-left text-sm ${selectedFaculty === option.value ? "bg-foreground text-background" : "bg-muted text-foreground"}`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <p className="text-sm font-semibold">Sort</p>
-        <div className="mt-3">
-          <Select value={sort} onValueChange={setSort}>
-            <SelectTrigger>
-              <SelectValue placeholder="Featured" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="featured">Featured</SelectItem>
-              <SelectItem value="price-low">Price: low to high</SelectItem>
-              <SelectItem value="price-high">Price: high to low</SelectItem>
-              <SelectItem value="rating">Top rated</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-    </div>
-  );
+  const brands = ["All", ...new Set(productsData.map((product) => product.brand))];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">Materials</p>
-          <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">Discover your next course material</h1>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Browse digital textbooks, lab manuals, professor notes, and study guides for fast campus access.
-          </p>
+          <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">Shop</p>
+          <h1 className="mt-3 text-3xl font-bold text-zinc-950 dark:text-white">Explore curated essentials</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="secondary" className="lg:hidden">
-                <Filter className="h-4 w-4" />
-                Filters
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <div className="mt-8">{filterPanel}</div>
-            </SheetContent>
-          </Sheet>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900">
+            <Search className="h-4 w-4" />
+            <Input
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search products"
+              className="w-48 border-0 bg-transparent px-0 shadow-none"
+            />
+          </div>
+          <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-800 dark:bg-zinc-900">
+            <ArrowUpDown className="h-4 w-4 text-zinc-500" />
+            <select
+              value={sort}
+              onChange={(event) => setSort(event.target.value)}
+              className="bg-transparent text-sm outline-none"
+            >
+              {sortOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <Button variant="secondary" className="lg:hidden" onClick={() => setShowFilters((value) => !value)}>
+            <SlidersHorizontal className="h-4 w-4" />
+            Filters
+          </Button>
         </div>
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
-        <aside className="hidden rounded-4xl border border-white/10 bg-white/80 p-5 lg:block dark:bg-zinc-950/70">
-          {filterPanel}
-        </aside>
+      <div className="grid gap-6 xl:grid-cols-[280px_1fr]">
+        <div className={`${showFilters ? "block" : "hidden"} xl:block`}>
+          <FilterSidebar
+            brands={brands}
+            selectedBrand={selectedBrand}
+            onBrandChange={setSelectedBrand}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            priceRange={priceRange}
+            onPriceRangeChange={setPriceRange}
+          />
+        </div>
 
         <div>
-          <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">
-            <span>{filteredProducts.length} materials</span>
-            <span>{isLoading ? "Loading" : "Ready to access"}</span>
+          <div className="mb-4 flex items-center justify-between text-sm text-zinc-500">
+            <p>{filtered.length} products shown</p>
+            <p>Filtered for {selectedCategory === "all" ? "all categories" : selectedCategory}</p>
           </div>
 
-          {isLoading ? (
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {loading ? (
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {Array.from({ length: 6 }).map((_, index) => (
-                <ProductSkeleton key={index} />
+                <div key={index} className="space-y-3">
+                  <Skeleton className="h-52 w-full" />
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
               ))}
             </div>
           ) : (
-            <ProductGrid products={filteredProducts} />
+            <ProductGrid products={filtered} />
           )}
         </div>
       </div>
     </div>
-  );
-}
-
-export default function ShopPage() {
-  return (
-    <Suspense fallback={<div className="p-8 text-center">Loading shop...</div>}>
-      <ShopContent />
-    </Suspense>
   );
 }
